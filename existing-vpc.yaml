@@ -1,0 +1,33 @@
+# An example of ClusterConfig object using an existing VPC:
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cluster-eks
+  region: us-west-2
+
+vpc:
+  id: "vpc-06e3f18ed91510898"  # (optional, must match VPC ID used for each subnet below)
+  cidr: "172.16.0.0/16"       # (optional, must match CIDR used by the given VPC)
+  subnets:
+    # must provide 'private' and/or 'public' subnets by availibility zone as shown
+    public:
+      us-west-2a:
+        id: "subnet-0572e450eab1410f1"
+        cidr: "172.16.192.0/20" # (optional, must match CIDR used by the given subnet)
+
+      us-west-2b:
+        id: "subnet-012b42fedb0c077f2"
+        cidr: "172.16.208.0/20"  # (optional, must match CIDR used by the given subnet)
+
+      us-west-2c:
+        id: "subnet-0a737fd8098403f7f"
+        cidr: "172.16.224.0/20"   # (optional, must match CIDR used by the given subnet)
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    desiredCapacity: 3
+    # privateNetworking: true # if only 'Private' subnets are given, this must be enabled
+
